@@ -1,1 +1,2 @@
-FROM --platform=linux/amd64 mariadb:latest
+FROM mariadb:latest
+EXPOSE 3306
