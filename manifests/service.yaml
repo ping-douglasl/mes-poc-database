@@ -1,11 +1,11 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: mes-poc-mysql
+  name: mes-mysql
 spec:
+  selector:
+    app: mes-mysql
   ports:
   - protocol: TCP
     port: 3306
     targetPort: 3306
-  selector:
-    app: mes-poc-mysql

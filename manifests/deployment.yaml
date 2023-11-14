@@ -1,32 +1,22 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: mes-poc-mysql
+  name: mes-mysql
 spec:
   selector:
     matchLabels:
-      app: mes-poc-mysql
+      app: mes-mysql
   strategy:
     type: Recreate
   template:
     metadata:
       labels:
-        app: mes-poc-mysql
+        app: mes-mysql
+        system: mes-system
     spec:
       containers:
       - image: mariadb:latest
-        name: mes-poc-mysql
-        envFrom:
-        - configMapRef:
-            name: mes-system-env
-        - secretRef:
-            name: mes-system-secrets
-        ports:
-        - containerPort: 3306
-          name: mysql
-        volumeMounts:
-        - name: mysql-persistent-storage
-          mountPath: /var/lib/mysql
+        name: mes-system-mysql
         resources:
           requests:
             cpu: 100m
@@ -34,7 +24,17 @@ spec:
           limits:
             cpu: 300m
             memory: 512Mi
+        ports:
+        - containerPort: 3306
+        envFrom:
+        - configMapRef:
+            name: mes-system-env
+        - secretRef:
+            name: mes-system-secrets
+        volumeMounts:
+        - name: mes-system-mysql-persistent-storage
+          mountPath: /var/lib/mysqlx
       volumes:
-      - name: mysql-persistent-storage
+      - name: mes-system-mysql-persistent-storage
         persistentVolumeClaim:
-          claimName: mysql-pv-claim
+          claimName: mes-system-mysql-pv-claim
